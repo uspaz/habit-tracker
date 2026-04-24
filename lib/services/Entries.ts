@@ -12,8 +12,8 @@ export const getEntriesByDate = async () => {
 
 // Solo trae entries de los últimos 365 días (no todas las de la DB)
 export const getManyEntries = async () => {
-    const cutoff = new Date()
-    cutoff.setDate(cutoff.getDate() - 365)
+    const now = new Date()
+    const cutoff = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 365))
 
     const entries = await prisma.entry.findMany({
         where: { date: { gte: cutoff } },

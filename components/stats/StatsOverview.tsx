@@ -8,10 +8,10 @@ interface StatsOverviewProps {
 
 const StatsOverview = ({ habits }: StatsOverviewProps) => {
   const completedCount = habits.filter(h => h.isCompletedToday).length;
-  const totalCount = habits.length;
-  const dailyProgress = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0 ;
+  const dailyActive = habits.filter(h => h.isActiveToday).length;
+  const dailyProgress = dailyActive > 0 ? Math.round((completedCount / dailyActive) * 100) : 0 ;
   const maxStreak = habits.length > 0 ? Math.max(...habits.map(h => h.streak)) : 0;
-  const remainingCount = totalCount - completedCount;
+  const remainingCount = dailyActive - completedCount;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -42,20 +42,20 @@ const StatsOverview = ({ habits }: StatsOverviewProps) => {
         </div>
         <div className="ml-2 grid grid-cols-[30px_1fr] items-center">
           <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">{completedCount}</p>
-          { habits.filter(h => h.isActiveToday).length > 0 ? 
+          { dailyActive > 0 ? 
           (
             <>
-              <p className="text-xs text-gray-500 dark:text-gray-400">de {totalCount} hábitos</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">de {dailyActive} hábitos</p>
               { remainingCount > 0 && 
                 <p className="text-xs text-gray-400 mt-1 col-span-2">¡Falta {remainingCount} {remainingCount === 1 ? 'hábito' : 'hábitos'} por completar!</p>
               }
             </>
           )
           :
-          <p className="text-xs text-gray-400 mt-4">No hay hábitos por completar hoy</p>
+          <p className="text-xs text-gray-400 mt-1 col-span-2">No hay hábitos por completar hoy</p>
         }
-        {remainingCount === 0 && totalCount > 0 && (
-          <p className="text-xs text-green-500 font-semibold mt-1">¡Todos completados!</p>
+        {remainingCount === 0 && dailyActive > 0 && (
+          <p className="text-xs text-green-500 font-semibold col-span-2 mt-1">¡Todos completados!</p>
         )}
         </div>
       </div>

@@ -16,12 +16,13 @@ const calcStreak = (habit: Habit, entryDates: Set<string>) => {
 
     let streak = 0;
     let streakStarted = false;
-    const time = new Date().setHours(0, 0, 0, 0)
+    const now = new Date()
+    const time = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
     const limit = time - MAX_LOOKBACK_DAYS * 86400000;
 
     for (let i = time; i > limit; i -= 86400000) {
 
-        if (habit.activeDays.includes(`${new Date(i).getDay()}`)) {
+        if (habit.activeDays.includes(`${new Date(i).getUTCDay()}`)) {
 
             // Lookup O(1) en el Set — antes era O(n) con array.some()
             if (entryDates.has(dayKey(i))) {
