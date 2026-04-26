@@ -1,5 +1,5 @@
 import { checkHabitToday } from "@/lib/services/Date"
-import { Prisma } from '@/app/generated/prisma/client'
+import { Prisma } from '../../app/generated/prisma/client'
 
 export async function uniqueCheck (habitId: string){
     try{        
